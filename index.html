@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Cutie ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif}
+body{
+min-height:100vh;
+background:linear-gradient(
+135deg,
+#1f2330,
+#4a2b45
+);
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+.container{
+width:100%;
+max-width:500px;
+margin:auto;
+}
+.card{background:rgba(255,255,255,.15);backdrop-filter:blur(12px);border-radius:24px;padding:24px;color:#fff;text-align:center;box-shadow:0 15px 40px rgba(0,0,0,.2)}
+.hero{
+width:100%;
+border-radius:16px;
+margin-bottom:15px;
+max-height:300px;
+object-fit:cover;
+}
+.buttons{position:relative;height:160px;margin-top:20px}
+button{border:none;border-radius:999px;padding:14px 24px;font-weight:600;cursor:pointer}
+#yesBtn{
+background:white;
+color:#5b3a70;
+}
+#noBtn{
+position:absolute;
+left:60%;
+background:#5b3a70;
+color:#fff;
+transition:all .35s ease;
+}
+.hidden{display:none}
+.option-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+.option-grid button{background:#fff;color:#ff4f87}
+.confetti{position:fixed;width:10px;height:10px;top:-10px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+</style>
+</head>
+<body>
+<audio id="bgMusic" loop>
+    <source src="song.mp3" type="audio/mpeg">
+</audio>
+<div class="container">
+<div class="card" id="page1">
+<img src="knight-princess.jpg" class="hero">
+<h1>Hey Cutie ✨</h1>
+<p>There is one question I've been wanting to ask you...</p>
+<h2 style="margin-top:15px">Will you go on a date with me? ❤️</h2>
+<div class="buttons">
+<button id="yesBtn">YES ❤️</button>
+<button id="noBtn">NO 😅</button>
+</div>
+</div>
+
+<div class="card hidden" id="page2">
+<h1>YAYYYY ❤️</h1>
+<p>Choose our royal adventure 👑</p>
+<div class="option-grid">
+<button onclick="pick('Lunch 🍽️')">🍽️ Lunch</button>
+<button onclick="pick('Dinner 🌙')">🌙 Dinner</button>
+<button onclick="pick('Hiking 🥾')">🥾 Hiking</button>
+<button onclick="pick('Movie 🎬')">🎬 Movie</button>
+<button onclick="pick('Mystery Room 🕵️')">🕵️ Mystery Room</button>
+<button onclick="pick('Surprise 🎁')">🎁 Surprise</button>
+</div>
+</div>
+
+<div class="card hidden" id="page3">
+<h1>
+🤴❤️👸
+</h1>
+<h2>Excellent Choice!</h2>
+<p id="choiceText"></p>
+<p style="margin-top:10px">
+See you soon Cutie ❤️
+</p>
+
+<p style="margin-top:20px;font-size:14px">
+⚔️ The knight eagerly awaits to protect his princess ⚔️
+</p>
+</div>
+</div>
+
+<script>
+emailjs.init({publicKey:"2srcSlWk5JAjHNSJ3"});
+
+function sendMail(action, choice){
+emailjs.send("service_145nnld","template_wcrb7lf",{
+name:"Date Website",
+time:new Date().toLocaleString(),
+message:"Action: "+action+" | Choice: "+choice,
+email:"ajaykrishnan79@gmail.com"
+}).catch(console.error);
+}
+
+const noBtn=document.getElementById("noBtn");
+noBtn.addEventListener("mouseenter",moveButton);
+noBtn.addEventListener("touchstart",moveButton);
+noBtn.addEventListener("click",moveButton);
+  document.getElementById("yesBtn").onclick=()=>{
+
+document.getElementById("bgMusic").play();
+
+sendMail(
+"YES CLICKED",
+"Waiting for option"
+);
+
+document.getElementById("page1").classList.add("hidden");
+
+document.getElementById("page2").classList.remove("hidden");
+
+confetti();
+
+};
+function moveButton(){
+
+ let currentX=parseFloat(noBtn.style.left)||220;
+ let currentY=parseFloat(noBtn.style.top)||80;
+
+ let newX=currentX+(Math.random()*240-120);
+ let newY=currentY+(Math.random()*180-90);
+
+ const card=document.getElementById("page1");
+
+ const maxX=card.offsetWidth-120;
+ const maxY=card.offsetHeight-80;
+
+ newX=Math.max(10,Math.min(newX,maxX));
+ newY=Math.max(10,Math.min(newY,maxY));
+
+ noBtn.style.left=newX+"px";
+ noBtn.style.top=newY+"px";
+}
+function pick(choice){
+sendMail("DATE OPTION SELECTED",choice);
+document.getElementById("page2").classList.add("hidden");
+document.getElementById("page3").classList.remove("hidden");
+document.getElementById("choiceText").innerHTML="You selected <b>"+choice+"</b>";
+confetti();
+}
+
+function confetti(){
+for(let i=0;i<80;i++){
+let c=document.createElement("div");
+c.className="confetti";
+c.style.left=Math.random()*100+"vw";
+c.style.background="hsl("+Math.random()*360+",100%,50%)";
+c.style.animationDuration=(Math.random()*3+2)+"s";
+document.body.appendChild(c);
+setTimeout(()=>c.remove(),5000);
+}
+}
+</script>
+</body>
+</html>
